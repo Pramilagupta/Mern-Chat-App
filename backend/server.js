@@ -32,17 +32,19 @@ app.use(errorHandler);
 // res.send(singleChat)
 // });
 
-const PORT = process.env.PORT || 5000;
+
+const PORT =  process.env.PORT;
 
 const server = app.listen(
   PORT,
   console.log(`Server started on PORT ${PORT}`.yellow.bold)
 );
 
+console.log(process.env.FRONTEND_URL)
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
   },
 });
 
@@ -74,8 +76,8 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.off("setup", () => {
+  socket.on("disconnect", () => {
     console.log("USER DISCONNECTED");
-    socket.leave(userData._id);
+    
   });
 });
