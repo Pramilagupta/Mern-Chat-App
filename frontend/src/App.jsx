@@ -4,6 +4,11 @@ import Homepage from "./Pages/Homepage";
 import ChatPage from "./Pages/ChatPage";
 // /import ChatProvider from "./Context/ChatProvider";
 
+import axios from "axios";
+import { VITE_BACKEND_API_URL } from "./constants/api_constants";
+axios.defaults.baseURL = VITE_BACKEND_API_URL;
+
+
 function App() {
 
   return (
