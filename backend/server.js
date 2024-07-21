@@ -7,7 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
-
+const cors = require("cors");
 dotenv.config();
 
 connectDB();
@@ -18,6 +18,11 @@ app.use(express.json()); //to accept json data
 app.get("/", (req, res) => {
   res.send("Api is Running successfully");
 });
+
+// all the url in the array are allowed to access the api
+app.use(cors({
+  origin: process.env.FRONTEND_URL.split(",")
+}))
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
@@ -44,7 +49,7 @@ console.log(process.env.FRONTEND_URL)
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL.split(",")
   },
 });
 
